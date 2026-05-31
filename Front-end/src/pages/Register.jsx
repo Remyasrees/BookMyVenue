@@ -8,6 +8,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [role,setRole] = useState("User");
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
@@ -49,41 +50,90 @@ export default function Register() {
             Already have an account? <Link to="/login">Sign in</Link>
           </p>
 
+          <div className="createBtnDiv">
+            <button type="button" className={`create-btn ${role === "User" ? "Active" : ""}`} onClick={() => setRole("User")}>User</button>
+            <button type="button" className={`create-btn ${role === "Customer" ? "Active" : ""}`} onClick={ ()=> setRole("Customer")}>Customer</button>
+          </div>
+
           {error && <div className="auth-error">⚠️ {error}</div>}
 
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="form-group">
-              <label>Full Name</label>
-              <input type="text" placeholder="Rahul Sharma" value={form.name} onChange={set("name")} className="form-input" />
-            </div>
-            <div className="form-group">
-              <label>Email Address</label>
-              <input type="email" placeholder="you@example.com" value={form.email} onChange={set("email")} className="form-input" />
-            </div>
-            <div className="form-group">
-              <label>Phone Number</label>
-              <input type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={set("phone")} className="form-input" />
-            </div>
-            <div className="form-row">
+          {role == "User" ? (
+            <>
+            <form onSubmit={handleSubmit} className="auth-form">
               <div className="form-group">
-                <label>Password</label>
-                <input type="password" placeholder="••••••••" value={form.password} onChange={set("password")} className="form-input" />
+                <label>Full Name</label>
+                <input type="text" placeholder="Rahul Sharma" value={form.name} onChange={set("name")} className="form-input" />
               </div>
               <div className="form-group">
-                <label>Confirm Password</label>
-                <input type="password" placeholder="••••••••" value={form.confirm} onChange={set("confirm")} className="form-input" />
+                <label>Email Address</label>
+                <input type="email" placeholder="you@example.com" value={form.email} onChange={set("email")} className="form-input" />
               </div>
-            </div>
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={set("phone")} className="form-input" />
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Password</label>
+                  <input type="password" placeholder="••••••••" value={form.password} onChange={set("password")} className="form-input" />
+                </div>
+                <div className="form-group">
+                  <label>Confirm Password</label>
+                  <input type="password" placeholder="••••••••" value={form.confirm} onChange={set("confirm")} className="form-input" />
+                </div>
+              </div>
 
-            <label className="checkbox-label terms-label">
-              <input type="checkbox" required />
-              I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-            </label>
+              <label className="checkbox-label terms-label">
+                <input type="checkbox" required />
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+              </label>
 
-            <button type="submit" className="auth-submit-btn" disabled={loading}>
-              {loading ? "Creating account..." : "Create Account"}
-            </button>
-          </form>
+              <button type="submit" className="auth-submit-btn" disabled={loading}>
+                {loading ? "Creating account..." : "Create Account"}
+              </button>
+            </form>
+            </>
+          ) : (
+            <>
+            <form onSubmit={handleSubmit} className="auth-form">
+              <div className="form-group">
+                <label>Venue Name</label>
+                <input type="text" placeholder="Rahul Sharma" value={form.name} onChange={set("name")} className="form-input" />
+              </div>
+              <div className="form-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="you@example.com" value={form.email} onChange={set("email")} className="form-input" />
+              </div>
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={set("phone")} className="form-input" />
+              </div>
+              <div className="form-group">
+                <label>Business Name</label>
+                <input type="text" placeholder="The Heritage Hall" value={form.businessName} onChange={set("businessName")} className="form-input" />
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Password</label>
+                  <input type="password" placeholder="••••••••" value={form.password} onChange={set("password")} className="form-input" />
+                </div>
+                <div className="form-group">
+                  <label>Confirm Password</label>
+                  <input type="password" placeholder="••••••••" value={form.confirm} onChange={set("confirm")} className="form-input" />
+                </div>
+              </div>
+
+              <label className="checkbox-label terms-label">
+                <input type="checkbox" required />
+                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+              </label>
+
+              <button type="submit" className="auth-submit-btn" disabled={loading}>
+                {loading ? "Creating account..." : "Create Account"}
+              </button>
+            </form>
+            </>
+          )}
 
           <div className="auth-divider"><span>or sign up with</span></div>
           <div className="social-auth">

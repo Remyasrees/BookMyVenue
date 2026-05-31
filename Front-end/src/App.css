@@ -60,6 +60,19 @@ img { max-width: 100%; display: block; }
   padding: 0 24px; height: 72px;
 }
 
+.searchCity {
+  width: 100%;
+  padding: 10px 0px;
+
+  input {
+    width: 100%;
+    border-radius: 7px;
+    height: 30px;
+    border: 1px #00000026 solid;
+    padding: 0 5px;
+  }
+}
+
 .nav-logo {
   display: flex; align-items: center; gap: 8px;
   font-family: var(--font-display); font-size: 1.4rem; font-weight: 700;
@@ -111,12 +124,44 @@ img { max-width: 100%; display: block; }
   padding: 8px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
   color: var(--primary); border: 1.5px solid var(--primary); transition: all 0.2s;
 }
-.btn-login:hover { background: var(--primary); color: var(--white); }
-.btn-signup {
+.btn-login.Active { background: var(--primary); color: var(--white); }
+.btn-login:hover { background: var(--primary-dark); color: var(--white); }
+/* .btn-signup {
   padding: 8px 20px; border-radius: 8px; font-size: 0.9rem; font-weight: 600;
   background: var(--primary); color: var(--white); transition: all 0.2s;
 }
-.btn-signup:hover { background: var(--primary-dark); }
+.btn-signup:hover { background: var(--primary-dark); } */
+
+.createBtnDiv {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px 0px;
+  gap: 15px;
+  margin-bottom: 10px;
+  .create-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    transition: all 0.2s;
+  }
+  .create-btn:hover {
+    color: var(--white);
+    background: var(--primary-dark);
+  }
+  .create-btn.Active {
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: var(--primary);
+    color: var(--white);
+    transition: all 0.2s;
+  }
+}
 
 .user-menu-wrap {
   position: relative; display: flex; align-items: center; gap: 8px;

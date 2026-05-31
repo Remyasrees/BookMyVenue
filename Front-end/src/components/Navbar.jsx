@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import BMV from "../assets/BMV.png"
@@ -15,6 +15,20 @@ export default function Navbar() {
   const [showCityDropdown, setShowCityDropdown] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [role,setPage] = useState("Login");
+  const cityRef = useRef(null);
+
+  useEffect( ()=> {
+    const handleClickOutside = (event) => {
+      if (cityRef.current && !cityRef.current.contains(event.target)) {
+        setShowCityDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown",handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown",handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="navbar">
@@ -26,13 +40,16 @@ export default function Navbar() {
         </Link>
 
         {/* City Selector */}
-        <div className="city-selector" onClick={() => setShowCityDropdown(!showCityDropdown)}>
+        <div ref={cityRef} className="city-selector" onClick={() => setShowCityDropdown(!showCityDropdown)}>
           <span className="city-pin">📍</span>
           <span className="city-name">{city}</span>
           <span className="city-arrow">{showCityDropdown ? "▲" : "▼"}</span>
           {showCityDropdown && (
-            <div className="city-dropdown">
+            <div className="city-dropdown" onClick={(e) => e.stopPropagation()}>
               <p className="dropdown-label">Select Your City</p>
+              <div className="searchCity">
+                <input type="text" placeholder="Search..." />
+              </div>
               <div className="city-grid">
                 {CITIES.map(c => (
                   <button
@@ -72,8 +89,8 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="auth-buttons">
-              <Link to="/login" className="btn-login">Login</Link>
-              <Link to="/register" className="btn-signup">Sign Up</Link>
+              <Link to="/login" className={`btn-login ${role === "Login" ? "Active" : ""}`} onClick={() => setPage("Login")}>Login</Link>
+              <Link to="/register" className={`btn-login ${role === "SignUp" ? "Active" : ""}`} onClick={() => setPage("SignUp")}>Sign Up</Link>
             </div>
           )}
         </div>

@@ -177,7 +177,7 @@ export default function Home() {
         <div className="cta-content">
           <h2>Own a Venue? List It Free!</h2>
           <p>Reach thousands of customers looking for the perfect event space.</p>
-          <button className="cta-btn">List Your Venue →</button>
+          <button className="cta-btn">Add Venue →</button>
         </div>
       </section>
     </div>
