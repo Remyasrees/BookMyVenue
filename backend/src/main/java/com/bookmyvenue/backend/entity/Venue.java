@@ -47,10 +47,10 @@ public class Venue {
     private String pincode;
 
     @Column(name = "latitude",precision=11,scale=8)
-    private Double latitude;
+    private BigDecimal latitude;
 
     @Column(name = "longitude",precision=11,scale=8)
-    private Double longitude;
+    private BigDecimal longitude;
 
     @Column(name = "capacity",nullable = false)
     private Integer capacity;
