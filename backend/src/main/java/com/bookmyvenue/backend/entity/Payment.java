@@ -3,7 +3,6 @@ import com.bookmyvenue.backend.enums.PaymentStatus;
 import com.bookmyvenue.backend.enums.PaymentType;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -50,7 +49,6 @@ public class Payment {
     @Column(name="payment_status",nullable = false,length = 30)
     private PaymentStatus paymentStatus =PaymentStatus.PENDING;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name="refund_status",nullable = false,length = 30)
     private PaymentStatus refundStatus =PaymentStatus.PENDING;
@@ -61,13 +59,8 @@ public class Payment {
     @Column(name = "razor_payment_id",length = 50)
     private String razorPaymentId;
 
-
-
-
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
-
-
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
