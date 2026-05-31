@@ -1,4 +1,5 @@
 package com.bookmyvenue.backend.entity;
+import com.bookmyvenue.backend.enums.PricingType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -46,16 +47,24 @@ public class Venue {
     private String pincode;
 
     @Column(name = "latitude",precision=11,scale=8)
-    private String latitude;
+    private Double latitude;
 
     @Column(name = "longitude",precision=11,scale=8)
-    private String longitude;
+    private Double longitude;
 
     @Column(name = "capacity",nullable = false)
-    private String capacity;
+    private Integer capacity;
 
-    @Column(name = "price_per_day",precision=12,scale=2)
-    private BigDecimal pricePerDay;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pricing_type", nullable = false)
+    private PricingType pricingType;
+
+    @Column(name = "base_price",nullable=false,precision=12,scale=2)
+    private BigDecimal basePrice;
+
+    @Column(name = "advance_percentage",precision=12,scale=2)
+    private BigDecimal advancePercentage;
 
     @Column(name = "status",nullable = false,length = 100)
     private String status="PENDING";
@@ -85,12 +94,12 @@ private Set<Amenity> amenities;
             inverseJoinColumns = @JoinColumn(name = "category_id")
 
     )
-    private Set<VenueCategory> categories;
+    private Set<VenueCategory> venuCategories;
 
     @OneToMany(mappedBy="venue",
             cascade=CascadeType.ALL,
             orphanRemoval = true)
-    private List<VenuPhoto> photos;
+    private List<VenuPhoto> venuPhotos;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

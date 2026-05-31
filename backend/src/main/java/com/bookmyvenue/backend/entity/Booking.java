@@ -1,5 +1,6 @@
 package com.bookmyvenue.backend.entity;
 import com.bookmyvenue.backend.enums.BookingStatus;
+import com.bookmyvenue.backend.enums.BookingType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -25,11 +26,12 @@ public class Booking {
     private Venue venue;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_user_id", nullable = false)
-    private Users customer;
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users bookedByUser;
 
-    @Column(name = "venu_name")
-    private String venuName;
+    @Enumerated(EnumType.STRING)
+    @Column(name="bookingType",nullable = false,length = 30)
+    private BookingType bookingType =BookingType.HOURLY;
 
     @Column(name = "venu_date",nullable = false)
     private LocalDate eventDate;
@@ -43,15 +45,20 @@ public class Booking {
     @Column(name = "guest_count",nullable = false)
     private Integer guestCount;
 
-    @Column(name = "special_requirements",columnDefinition = "TEXT")
-    private String specialRequirements;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="status",nullable = false,length = 30)
-    private BookingStatus bookingStatus =BookingStatus.PENDING;
+    @Column(name="bookingStatus",nullable = false,length = 30)
+    private BookingStatus bookingStatus =BookingStatus.PENDING_PAYMENT;
 
-    @Column(name = "booking_reference",nullable = false,length = 50)
-    private String bookingReference;
+
+    @Column(name = "cancellation_reason",nullable = true,length = 50)
+    private String cancellationReason;
+
+    @Column(name = "cancellation_at", nullable = true, updatable = false)
+    private LocalDateTime cancellationAt;
+
+    @Column(name = "cancelled_by")
+    private String cancelledBy;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
