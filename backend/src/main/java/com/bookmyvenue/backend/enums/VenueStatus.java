@@ -1,6 +1,6 @@
 package com.bookmyvenue.backend.enums;
 
-public enum VenuStatus {
+public enum VenueStatus {
     PENDING_APPROVAL,
     APPROVED,
     REJECTED,

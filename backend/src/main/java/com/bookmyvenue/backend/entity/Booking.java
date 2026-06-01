@@ -31,7 +31,7 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     @Column(name="bookingType",nullable = false,length = 30)
-    private BookingType bookingType =BookingType.HOURLY;
+    private BookingType bookingType;
 
     @Column(name = "venu_date",nullable = false)
     private LocalDate eventDate;
