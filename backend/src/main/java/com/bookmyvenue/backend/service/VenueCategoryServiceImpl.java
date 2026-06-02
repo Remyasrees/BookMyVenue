@@ -30,7 +30,7 @@ public class VenueCategoryServiceImpl implements VenueCategoryService {
 
     @Override
     public List<VenueCategoryResponse> getAllCategories() {
-        return dao.findAllDto();
+        return dao.findAll();
     }
 
     @Override

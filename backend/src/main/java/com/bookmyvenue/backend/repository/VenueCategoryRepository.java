@@ -18,15 +18,15 @@ public interface VenueCategoryRepository extends JpaRepository<VenueCategory, Lo
     @Query("SELECT new com.bookmyvenue.backend.dto.response.VenueCategoryResponse(" +
             "c.categoryId, c.categoryName, c.description, c.isActive, c.createdAt, c.updatedAt) " +
             "FROM VenueCategory c WHERE c.categoryId = :categoryId")
-    Optional<VenueCategoryResponse> findByIdDto(@Param("categoryId") Long categoryId);
+    Optional<VenueCategoryResponse> findByIdVenuCategoryDto(@Param("categoryId") Long categoryId);
 
     @Query("SELECT new com.bookmyvenue.backend.dto.response.VenueCategoryResponse(" +
             "c.categoryId, c.categoryName, c.description, c.isActive, c.createdAt, c.updatedAt) " +
             "FROM VenueCategory c ORDER BY c.categoryId")
-    List<VenueCategoryResponse> findAllDto();
+    List<VenueCategoryResponse> findAllVenuCategoriesDto();
 
     @Query("SELECT new com.bookmyvenue.backend.dto.response.VenueCategoryResponse(" +
             "c.categoryId, c.categoryName, c.description, c.isActive, c.createdAt, c.updatedAt) " +
             "FROM VenueCategory c WHERE c.isActive = true ORDER BY c.categoryName")
-    List<VenueCategoryResponse> findAllActiveCategoriesDto();
+    List<VenueCategoryResponse> findAllActiveVenuCategoriesDto();
 }

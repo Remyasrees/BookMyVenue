@@ -25,10 +25,10 @@ public class VenueCategoryDaoImpl implements VenueCategoryDao {
         return mapper.toResponse(saved);
     }
 
+
     @Override
     public Optional<VenueCategoryResponse> findById(Long categoryId) {
-        return repository.findById(categoryId)
-                .map(mapper::toResponse);
+        return repository.findByIdVenuCategoryDto(categoryId);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class VenueCategoryDaoImpl implements VenueCategoryDao {
                 .toList();
     }
 
-    @Override
+        @Override
     public VenueCategoryResponse update(Long categoryId, VenueCategoryRequest request) {
         VenueCategory existing = repository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
@@ -59,37 +59,16 @@ public class VenueCategoryDaoImpl implements VenueCategoryDao {
     }
 
     @Override
-    public VenueCategory saveEntity(VenueCategory venueCategory) {
-        return repository.save(venueCategory);
-    }
-
-    @Override
-    public Optional<VenueCategory> findEntityById(Long categoryId) {
-        return repository.findById(categoryId);
-    }
-
-    @Override
     public Optional<VenueCategory> findByCategoryName(String categoryName) {
         return repository.findByCategoryName(categoryName);
     }
 
     @Override
-    public List<VenueCategory> findByIsActive(Boolean isActive) {
-        return repository.findByIsActive(isActive);
-    }
-
-    @Override
-    public Optional<VenueCategoryResponse> findByIdDto(Long categoryId) {
-        return repository.findByIdDto(categoryId);
-    }
-
-    @Override
-    public List<VenueCategoryResponse> findAllDto() {
-        return repository.findAllDto();
-    }
-
-    @Override
     public List<VenueCategoryResponse> findAllActiveCategoriesDto() {
-        return repository.findAllActiveCategoriesDto();
+        // Delegate to repository which returns DTO projection for active categories
+        return repository.findAllActiveVenuCategoriesDto();
     }
+
+
+
 }
