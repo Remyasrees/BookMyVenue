@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import VenueCard from "../components/VenueCard";
 import { venues, eventCategories } from "../services/Data";
@@ -177,7 +177,7 @@ export default function Home() {
         <div className="cta-content">
           <h2>Own a Venue? List It Free!</h2>
           <p>Reach thousands of customers looking for the perfect event space.</p>
-          <button className="cta-btn">Add Venue →</button>
+          <Link to="/venueOwner" className="cta-btn">Add Venue →</Link>
         </div>
       </section>
     </div>

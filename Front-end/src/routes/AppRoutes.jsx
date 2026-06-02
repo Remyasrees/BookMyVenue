@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Booking from "../pages/Booking";
 import Admin from "../pages/Admin";
+import VenuePanel from "../pages/VenuePanel";
 
 export default function AppRoutes() {
   return (
@@ -17,6 +18,7 @@ export default function AppRoutes() {
       <Route path="/register" element={<Register />} />
       <Route path="/booking" element={<Booking />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/venueOwner" element={<VenuePanel />} />
     </Routes>
   );
 }
