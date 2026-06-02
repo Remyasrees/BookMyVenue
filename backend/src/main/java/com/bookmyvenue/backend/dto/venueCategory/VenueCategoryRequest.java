@@ -1,4 +1,4 @@
-package com.bookmyvenue.backend.dto.request;
+package com.bookmyvenue.backend.dto.venueCategory;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

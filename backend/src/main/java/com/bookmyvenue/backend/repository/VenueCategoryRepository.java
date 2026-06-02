@@ -1,5 +1,5 @@
 package com.bookmyvenue.backend.repository;
-import com.bookmyvenue.backend.dto.response.VenueCategoryResponse;
+import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse;
 import com.bookmyvenue.backend.entity.VenueCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,17 +15,17 @@ public interface VenueCategoryRepository extends JpaRepository<VenueCategory, Lo
 
     List<VenueCategory> findByIsActive(Boolean isActive);
 
-    @Query("SELECT new com.bookmyvenue.backend.dto.response.VenueCategoryResponse(" +
+    @Query("SELECT new com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse(" +
             "c.categoryId, c.categoryName, c.description, c.isActive, c.createdAt, c.updatedAt) " +
             "FROM VenueCategory c WHERE c.categoryId = :categoryId")
     Optional<VenueCategoryResponse> findByIdVenuCategoryDto(@Param("categoryId") Long categoryId);
 
-    @Query("SELECT new com.bookmyvenue.backend.dto.response.VenueCategoryResponse(" +
+    @Query("SELECT new com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse(" +
             "c.categoryId, c.categoryName, c.description, c.isActive, c.createdAt, c.updatedAt) " +
             "FROM VenueCategory c ORDER BY c.categoryId")
     List<VenueCategoryResponse> findAllVenuCategoriesDto();
 
-    @Query("SELECT new com.bookmyvenue.backend.dto.response.VenueCategoryResponse(" +
+    @Query("SELECT new com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse(" +
             "c.categoryId, c.categoryName, c.description, c.isActive, c.createdAt, c.updatedAt) " +
             "FROM VenueCategory c WHERE c.isActive = true ORDER BY c.categoryName")
     List<VenueCategoryResponse> findAllActiveVenuCategoriesDto();
