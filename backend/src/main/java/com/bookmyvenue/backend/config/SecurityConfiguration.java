@@ -21,7 +21,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/**").permitAll()
                         // Allow actuator endpoints
                         .requestMatchers("/actuator/**").permitAll()
-                        // All other requests require authentication
+                        // All others requests require authentication
                         .anyRequest().authenticated()
                 )
                 .httpBasic(basic -> {});
