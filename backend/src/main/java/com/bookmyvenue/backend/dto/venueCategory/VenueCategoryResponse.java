@@ -1,4 +1,4 @@
-package com.bookmyvenue.backend.dto.response;
+package com.bookmyvenue.backend.dto.venueCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.time.LocalDateTime;

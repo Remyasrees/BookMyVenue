@@ -1,6 +1,6 @@
 package com.bookmyvenue.backend.service;
-import com.bookmyvenue.backend.dto.request.VenueCategoryRequest;
-import com.bookmyvenue.backend.dto.response.VenueCategoryResponse;
+import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryRequest;
+import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse;
 import com.bookmyvenue.backend.exception.ResourceNotFoundException;
 import com.bookmyvenue.backend.dao.VenueCategoryDao;
 import lombok.RequiredArgsConstructor;

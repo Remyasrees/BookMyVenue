@@ -1,8 +1,8 @@
 package com.bookmyvenue.backend.mapper;
 
 
-import com.bookmyvenue.backend.dto.request.VenueCategoryRequest;
-import com.bookmyvenue.backend.dto.response.VenueCategoryResponse;
+import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryRequest;
+import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse;
 import com.bookmyvenue.backend.entity.VenueCategory;
 import org.mapstruct.Mapper;
 
