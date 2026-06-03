@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-// ── Mock Data ──────────────────────────────────────────────
 const OWNER_VENUES = [
   { id: 1, name: "The Grand Palace Banquet", type: "Wedding", city: "Bengaluru", location: "Indiranagar", capacity: "500 guests", price: 85000, rating: 4.8, reviews: 124, status: "active", bookings: 18, image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&q=80", amenities: ["AC", "Parking", "Catering", "DJ", "Decor", "Bridal Room"], description: "A luxurious banquet hall with elegant interiors, perfect for grand weddings and receptions." },
   { id: 2, name: "Pearl Banquet & Lawn", type: "Wedding", city: "Bengaluru", location: "Koramangala", capacity: "400 guests", price: 72000, rating: 4.6, reviews: 98, status: "active", bookings: 11, image: "https://images.unsplash.com/photo-1478146059778-26ca6e370071?w=400&q=80", amenities: ["Indoor + Lawn", "AC", "Catering", "DJ", "Parking", "Decor"], description: "An exquisite combination of indoor hall and outdoor lawn for your dream wedding." },
@@ -18,7 +17,6 @@ const AMENITY_OPTIONS = ["AC", "Parking", "Catering", "DJ", "Decor", "Bridal Roo
 const VENUE_TYPES = ["Wedding", "Party", "Corporate", "Outdoor", "Birthday", "Reception"];
 const CITIES = ["Bengaluru", "Mumbai", "Delhi", "Hyderabad", "Chennai", "Pune", "Jaipur", "Ahmedabad", "Kolkata", "Surat"];
 
-// ── Reusable Components ────────────────────────────────────
 function StatusBadge({ status }) {
   const map = { active: { bg: "#e6f9f0", color: "#1a7a4a", label: "● Active" }, draft: { bg: "#fff8e6", color: "#b07800", label: "◐ Draft" }, cancelled: { bg: "#fff0f3", color: "#8b1a2e", label: "✕ Cancelled" }, confirmed: { bg: "#e6f9f0", color: "#1a7a4a", label: "✔ Confirmed" }, pending: { bg: "#fff8e6", color: "#b07800", label: "⏳ Pending" } };
   const s = map[status] || map.draft;
@@ -38,7 +36,6 @@ function StatCard({ icon, label, value, sub, accent }) {
   );
 }
 
-// ── Venue Form Modal ───────────────────────────────────────
 function VenueFormModal({ venue, onClose, onSave }) {
   const isEdit = !!venue;
   const [form, setForm] = useState(venue || { name: "", type: "Wedding", city: "", location: "", capacity: "", price: "", description: "", amenities: [], status: "draft", image: "" });
@@ -46,6 +43,10 @@ function VenueFormModal({ venue, onClose, onSave }) {
 
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
   const toggleAmenity = (a) => setForm(f => ({ ...f, amenities: f.amenities.includes(a) ? f.amenities.filter(x => x !== a) : [...f.amenities, a] }));
+
+  useEffect(()=> {
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }, []);
 
   return (
     <div className="vp-modal-overlay" onClick={onClose}>
@@ -157,7 +158,6 @@ function VenueFormModal({ venue, onClose, onSave }) {
   );
 }
 
-// ── Delete Confirm Modal ───────────────────────────────────
 function DeleteModal({ venue, onClose, onConfirm }) {
   return (
     <div className="vp-modal-overlay" onClick={onClose}>
@@ -178,9 +178,8 @@ function DeleteModal({ venue, onClose, onConfirm }) {
   );
 }
 
-// ── Edit Profile Section ───────────────────────────────────
 function ProfileSection() {
-  const [form, setForm] = useState({ name: "Nikhil Reddy", email: "nikhil@gmail.com", phone: "+91 98765 43210", business: "Reddy Hospitality Pvt Ltd", city: "Bengaluru", bio: "Venue owner with 10+ years of experience in event hospitality across South India.", avatar: "N" });
+  const [form, setForm] = useState({ name: "Nikhil", email: "nikhil@gmail.com", phone: "+91 98765 43210", business: "Reddy Hospitality Pvt Ltd", city: "Bengaluru", bio: "Venue owner with 10+ years of experience in event hospitality across South India.", avatar: "N" });
   const [saved, setSaved] = useState(false);
   const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
 
@@ -259,7 +258,6 @@ function ProfileSection() {
   );
 }
 
-// ── Main VenuePanel ────────────────────────────────────────
 export default function VenuePanel() {
   const [activeNav, setActiveNav] = useState("dashboard");
   const [myVenues, setMyVenues] = useState(OWNER_VENUES);
@@ -299,7 +297,6 @@ export default function VenuePanel() {
 
   return (
     <div className="vp-root">
-      {/* ── Sidebar ── */}
       <aside className={`vp-sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="vp-sidebar-logo">
           <span>🏛️</span>
@@ -316,7 +313,7 @@ export default function VenuePanel() {
           <div className="vp-owner-chip">
             <div className="vp-owner-avatar">N</div>
             <div>
-              <p className="vp-owner-name">Nikhil Reddy</p>
+              <p className="vp-owner-name">Nikhil</p>
               <p className="vp-owner-role">Venue Owner</p>
             </div>
           </div>
@@ -325,9 +322,7 @@ export default function VenuePanel() {
 
       {sidebarOpen && <div className="vp-sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
 
-      {/* ── Main Content ── */}
       <main className="vp-main">
-        {/* Top Bar */}
         <header className="vp-topbar">
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <button className="vp-hamburger" onClick={() => setSidebarOpen(s => !s)}>☰</button>
@@ -341,8 +336,6 @@ export default function VenuePanel() {
             <button className="vp-btn-primary" onClick={() => setShowAddModal(true)}>+ Add New Venue</button>
           )}
         </header>
-
-        {/* ── Dashboard ── */}
         {activeNav === "dashboard" && (
           <div className="vp-page-content">
             <div className="vp-stats-row">
@@ -353,7 +346,6 @@ export default function VenuePanel() {
             </div>
 
             <div className="vp-dash-grid">
-              {/* Recent Bookings */}
               <div className="vp-card">
                 <div className="vp-card-header">
                   <h3>Recent Bookings</h3>
@@ -375,7 +367,6 @@ export default function VenuePanel() {
                 </table>
               </div>
 
-              {/* My Venues Quick */}
               <div className="vp-card">
                 <div className="vp-card-header">
                   <h3>My Venues</h3>
@@ -401,7 +392,6 @@ export default function VenuePanel() {
           </div>
         )}
 
-        {/* ── My Venues ── */}
         {activeNav === "venues" && (
           <div className="vp-page-content">
             {myVenues.length === 0 ? (
@@ -446,7 +436,6 @@ export default function VenuePanel() {
           </div>
         )}
 
-        {/* ── Bookings ── */}
         {activeNav === "bookings" && (
           <div className="vp-page-content">
             <div className="vp-bookings-filter">
@@ -494,16 +483,12 @@ export default function VenuePanel() {
             </div>
           </div>
         )}
-
-        {/* ── Profile ── */}
         {activeNav === "profile" && (
           <div className="vp-page-content">
             <ProfileSection />
           </div>
         )}
       </main>
-
-      {/* Modals */}
       {(showAddModal || editVenue) && (
         <VenueFormModal
           venue={editVenue}
@@ -514,8 +499,6 @@ export default function VenuePanel() {
       {deleteVenue && (
         <DeleteModal venue={deleteVenue} onClose={() => setDeleteVenue(null)} onConfirm={handleDelete} />
       )}
-
-      {/* Toast */}
       {toast && (
         <div className={`vp-toast ${toast.type === "error" ? "vp-toast-error" : ""}`}>{toast.msg}</div>
       )}

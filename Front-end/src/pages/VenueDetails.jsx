@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { venues } from "../services/Data";
 import { useAuth } from "../context/AuthContext";
@@ -25,6 +25,10 @@ export default function VenueDetails() {
   };
 
   const today = new Date().toISOString().split("T")[0];
+
+  useEffect(()=> {
+    window.scrollTo({top:0, behavior: "smooth"});
+  }, []);
 
   return (
     <div className="venue-details-page">
