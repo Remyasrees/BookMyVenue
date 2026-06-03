@@ -1,5 +1,7 @@
 package com.bookmyvenue.backend.service;
 
+import com.bookmyvenue.backend.dto.authentication.LoginRequest;
+import com.bookmyvenue.backend.dto.authentication.LoginResponse;
 import com.bookmyvenue.backend.dto.authentication.RegisterRequest;
 import com.bookmyvenue.backend.dto.authentication.RegisterResponse;
 import com.bookmyvenue.backend.entity.Users;
@@ -12,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -21,7 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public RegisterResponse registerResponse(RegisterRequest registerRequest) {
+    public RegisterResponse register(RegisterRequest registerRequest) {
 
         if(UserRole.ADMIN.equals(registerRequest.getRole())){
             throw new BadrequestException("Admin Registration is not allowed");
@@ -60,6 +64,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         registerResponse.setMessage("Successfully registered. Please login with your credentials.");
 
         return registerResponse;
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+        Users user;
+
+        if(loginRequest.getUserName().contains("@")){
+          user = userRepository.findByEmail(loginRequest.getUserName())
+                  .orElseThrow(()-> new BadrequestException("Invalid Credentials"));
+        }
+        else if(loginRequest.getUserName().matches(("^[6-9][0-9]{9}$"))){
+             user = userRepository.findByPhone(loginRequest.getUserName())
+                    .orElseThrow(()-> new BadrequestException("Invalid Credentials"));
+        }
+        else{
+            throw new BadrequestException("Invalid Credentials");
+        }
+
+        if(!passwordEncoder.matches(loginRequest.getPassword(),user.getPasswordHash())){
+            throw new BadrequestException("Invalid Credentials ");
+        }
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setUserId(user.getUserId());
+        loginResponse.setFirstName(user.getFirstName());
+        loginResponse.setEmail(user.getEmail());
+        loginResponse.setPhone(user.getPhone());
+        loginResponse.setCity(user.getCity());
+        loginResponse.setRole(user.getRole());
+        loginResponse.setMessage("Login Successful");
+
+
+        return loginResponse;
     }
 
 
