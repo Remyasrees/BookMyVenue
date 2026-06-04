@@ -10,5 +10,5 @@ public interface AmenityMapper {
 
     Amenity toEntity(AmenityRequest dto);
 
-    AmenityResponse toDto(Amenity amenity);
+    AmenityResponse toResponse(Amenity amenity);
 }
