@@ -45,8 +45,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .role(registerRequest.getRole())
                 .passwordHash(encodedPassword)
                 .status(UserStatus.ACTIVE)
-                .createdBy("SYSTEM")
-                .updatedBy("SYSTEM")
+                .createdBy(1L)
+                .updatedBy(1L)
                 .build();
 
         Users savedUser = userRepository.save(user);

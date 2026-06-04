@@ -2,7 +2,9 @@ package com.bookmyvenue.backend.service;
 import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryRequest;
 import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse;
 import com.bookmyvenue.backend.exception.ResourceNotFoundException;
-import com.bookmyvenue.backend.dao.VenueCategoryDao;
+import com.bookmyvenue.backend.entity.VenueCategory;
+import com.bookmyvenue.backend.mapper.VenueCategoryMapper;
+import com.bookmyvenue.backend.repository.VenueCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,25 +14,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VenueCategoryServiceImpl implements VenueCategoryService {
 
-    private final VenueCategoryDao dao;
+    private final VenueCategoryRepository repository;
+    private final VenueCategoryMapper mapper;
 
     @Override
     public VenueCategoryResponse createCategory(VenueCategoryRequest request) {
         validateCategoryRequest(request);
         checkDuplicateCategoryName(request.getCategoryName());
-        return dao.save(request);
+        VenueCategory entity = mapper.toEntity(request);
+        entity.setCreatedBy(1L);
+        entity.setUpdatedBy(1L);
+        VenueCategory saved = repository.save(entity);
+        return mapper.toResponse(saved);
     }
 
     @Override
     public VenueCategoryResponse getCategoryById(Long id) {
         validateId(id);
-        return dao.findById(id)
+        return repository.findByIdVenuCategoryDto(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
     }
 
     @Override
     public List<VenueCategoryResponse> getAllCategories() {
-        return dao.findAll();
+        return repository.findAllVenuCategoriesDto();
     }
 
     @Override
@@ -38,36 +45,40 @@ public class VenueCategoryServiceImpl implements VenueCategoryService {
         validateId(id);
         validateCategoryRequest(request);
         
-        dao.findById(id)
+        VenueCategory existing = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
-        
-        return dao.update(id, request);
+
+        VenueCategory updatedEntity = VenueCategory.builder()
+                .categoryId(existing.getCategoryId())
+                .categoryName(request.getCategoryName())
+                .description(request.getDescription())
+                .isActive(request.getIsActive())
+                .createdAt(existing.getCreatedAt())
+                .createdBy(existing.getCreatedBy())
+                .updatedAt(java.time.LocalDateTime.now())
+                .updatedBy(1L)
+                .build();
+
+        VenueCategory saved = repository.save(updatedEntity);
+        return mapper.toResponse(saved);
     }
 
     @Override
     public void deleteCategory(Long id) {
         validateId(id);
-        dao.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
-        dao.deleteById(id);
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Category not found with id: " + id);
+        }
+        repository.deleteById(id);
     }
 
     public List<VenueCategoryResponse> getActiveCategoriesOnly() {
-        return dao.findAllActiveCategoriesDto();
+        return repository.findAllActiveVenuCategoriesDto();
     }
 
     public VenueCategoryResponse getCategoryByName(String categoryName) {
-        return dao.findByCategoryName(categoryName)
-                .map(entity -> {
-                    VenueCategoryResponse response = new VenueCategoryResponse();
-                    response.setCategoryId(entity.getCategoryId());
-                    response.setCategoryName(entity.getCategoryName());
-                    response.setDescription(entity.getDescription());
-                    response.setIsActive(entity.getIsActive());
-                    response.setCreatedAt(entity.getCreatedAt());
-                    response.setUpdatedAt(entity.getUpdatedAt());
-                    return response;
-                })
+        return repository.findByCategoryName(categoryName)
+                .map(mapper::toResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with name: " + categoryName));
     }
 
@@ -87,7 +98,7 @@ public class VenueCategoryServiceImpl implements VenueCategoryService {
     }
 
     private void checkDuplicateCategoryName(String categoryName) {
-        dao.findByCategoryName(categoryName).ifPresent(entity -> {
+        repository.findByCategoryName(categoryName).ifPresent(entity -> {
             throw new IllegalArgumentException("Category with name '" + categoryName + "' already exists");
         });
     }
