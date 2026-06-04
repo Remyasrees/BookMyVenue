@@ -1,5 +1,4 @@
 package com.bookmyvenue.backend.service;
-
 import com.bookmyvenue.backend.dto.authentication.RegisterRequest;
 import com.bookmyvenue.backend.dto.authentication.RegisterResponse;
 
