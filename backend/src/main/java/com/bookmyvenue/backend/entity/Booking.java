@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-
 @Entity
 @Table(name = "booking")
 @Getter
@@ -67,10 +66,10 @@ public class Booking {
     private LocalDateTime updatedAt;
 
     @Column(name = "created_by", updatable = false)
-    private String createdBy;
+    private Long createdBy;
 
     @Column(name = "updated_by")
-    private String updatedBy;
+    private Long updatedBy;
 
     @PrePersist
     protected void prePersist() {
