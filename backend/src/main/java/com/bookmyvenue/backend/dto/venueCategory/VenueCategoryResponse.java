@@ -13,7 +13,6 @@ public class VenueCategoryResponse {
     private Boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
     public VenueCategoryResponse() {
 
     }
