@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface AmenityMapper {
 
-    Amenity toEntity(AmenityRequest dto);
+    Amenity toEntity(AmenityRequest request );
 
-    AmenityResponse toResponse(Amenity amenity);
+    AmenityResponse toResponse(Amenity response);
 }

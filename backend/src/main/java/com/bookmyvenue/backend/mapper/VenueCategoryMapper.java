@@ -11,5 +11,5 @@ public interface VenueCategoryMapper {
 
     VenueCategory toEntity(VenueCategoryRequest request);
 
-    VenueCategoryResponse toResponse(VenueCategory entity);
+    VenueCategoryResponse toResponse(VenueCategory response);
 }
