@@ -3,6 +3,7 @@ package com.bookmyvenue.backend.service;
 import com.bookmyvenue.backend.dto.venueAmenity.AmenityRequest;
 import com.bookmyvenue.backend.dto.venueAmenity.AmenityResponse;
 import com.bookmyvenue.backend.entity.Amenity;
+import com.bookmyvenue.backend.mapper.AmenityMapper;
 import com.bookmyvenue.backend.repository.AmenityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.List;
 public class AmenityServiceImpl implements AmenityService {
 
     private final AmenityRepository amenityRepository;
+    private final AmenityMapper mapper;
 
     @Override
    public AmenityResponse createAmenity(AmenityRequest request)
@@ -26,8 +28,7 @@ public class AmenityServiceImpl implements AmenityService {
                 .build();
 
         Amenity savedAmenity = amenityRepository.save(amenity);
-
-        return mapToResponse(savedAmenity);
+                  return mapper.toResponse(savedAmenity);
     }
 
     @Override
@@ -36,8 +37,7 @@ public class AmenityServiceImpl implements AmenityService {
         Amenity amenity = amenityRepository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Amenity not found"));
-
-        return mapToResponse(amenity);
+        return mapper.toResponse(amenity);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AmenityServiceImpl implements AmenityService {
 
         return amenityRepository.findAll()
                 .stream()
-                .map(this::mapToResponse)
+                .map(mapper::toResponse)
                 .toList();
     }
 
@@ -56,16 +56,19 @@ public class AmenityServiceImpl implements AmenityService {
         Amenity amenity = amenityRepository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Amenity not found"));
-
-        amenity.setAmenityName(request.getAmenityName());
-        amenity.setDescription(request.getDescription());
-        amenity.setIsActive(request.getIsActive());
-        amenity.setUpdatedBy(1L);
-
-        Amenity updatedAmenity =
+        amenity = Amenity.builder()
+                .amenityId(amenity.getAmenityId())
+                .amenityName(request.getAmenityName())
+                .description(request.getDescription())
+                .isActive(request.getIsActive())
+                .createdAt(amenity.getCreatedAt())
+                .createdBy(amenity.getCreatedBy())
+                .updatedAt(java.time.LocalDateTime.now())
+                .updatedBy(1L)
+                .build();
+         Amenity updatedAmenity =
                 amenityRepository.save(amenity);
-
-        return mapToResponse(updatedAmenity);
+        return mapper.toResponse(updatedAmenity);
     }
 
     @Override
@@ -78,17 +81,4 @@ public class AmenityServiceImpl implements AmenityService {
         amenityRepository.delete(amenity);
     }
 
-    private AmenityResponse mapToResponse(Amenity amenity) {
-
-        return AmenityResponse.builder()
-                .amenityId(amenity.getAmenityId())
-                .amenityName(amenity.getAmenityName())
-                .description(amenity.getDescription())
-                .isActive(amenity.getIsActive())
-                .createdAt(amenity.getCreatedAt())
-                .updatedAt(amenity.getUpdatedAt())
-                .createdBy(amenity.getCreatedBy())
-                .updatedBy(amenity.getUpdatedBy())
-                .build();
-    }
 }
