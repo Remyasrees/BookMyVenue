@@ -7,14 +7,12 @@ import com.bookmyvenue.backend.dto.authentication.RegisterResponse;
 import com.bookmyvenue.backend.entity.Users;
 import com.bookmyvenue.backend.enums.UserRole;
 import com.bookmyvenue.backend.enums.UserStatus;
-import com.bookmyvenue.backend.exception.BadrequestException;
+import com.bookmyvenue.backend.exception.BadRequestException;
 import com.bookmyvenue.backend.exception.DuplicateResourceException;
 import com.bookmyvenue.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public RegisterResponse register(RegisterRequest registerRequest) {
 
         if(UserRole.ADMIN.equals(registerRequest.getRole())){
-            throw new BadrequestException("Admin Registration is not allowed");
+            throw new BadRequestException("Admin Registration is not allowed");
         }
 
         if(userRepository.existsByEmail(registerRequest.getEmail())){
@@ -72,18 +70,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if(loginRequest.getUserName().contains("@")){
           user = userRepository.findByEmail(loginRequest.getUserName())
-                  .orElseThrow(()-> new BadrequestException("Invalid Credentials"));
+                  .orElseThrow(()-> new BadRequestException("Invalid Credentials"));
         }
         else if(loginRequest.getUserName().matches(("^[6-9][0-9]{9}$"))){
              user = userRepository.findByPhone(loginRequest.getUserName())
-                    .orElseThrow(()-> new BadrequestException("Invalid Credentials"));
+                    .orElseThrow(()-> new BadRequestException("Invalid Credentials"));
         }
         else{
-            throw new BadrequestException("Invalid Credentials");
+            throw new BadRequestException("Invalid Credentials");
         }
 
         if(!passwordEncoder.matches(loginRequest.getPassword(),user.getPasswordHash())){
-            throw new BadrequestException("Invalid Credentials ");
+            throw new BadRequestException("Invalid Credentials ");
         }
 
         LoginResponse loginResponse = new LoginResponse();
