@@ -3,6 +3,7 @@ import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse;
 import com.bookmyvenue.backend.entity.Venue;
 import com.bookmyvenue.backend.entity.VenueAvailability;
 import com.bookmyvenue.backend.entity.VenueCategory;
+import com.bookmyvenue.backend.enums.VenueStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,4 +14,11 @@ import java.util.Optional;
 @Repository
 public interface VenueRepository extends JpaRepository<Venue, Long> {
     List<VenueAvailability> findByVenueVenueId(Long venueId);
+    List<Venue> findByStatus(VenueStatus status);
+
+    List<Venue> findByCity(String city);
+
+    List<Venue> findByOwnerUserUserId(Long userId);
+
+    boolean existsByVenueName(String venueName);
 }
