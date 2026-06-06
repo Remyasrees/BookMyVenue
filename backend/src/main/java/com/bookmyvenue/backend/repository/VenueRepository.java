@@ -1,6 +1,7 @@
 package com.bookmyvenue.backend.repository;
 import com.bookmyvenue.backend.dto.venueCategory.VenueCategoryResponse;
 import com.bookmyvenue.backend.entity.Venue;
+import com.bookmyvenue.backend.entity.VenueAvailability;
 import com.bookmyvenue.backend.entity.VenueCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,5 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface VenueRepository extends JpaRepository<Venue, Long> {
-
+    List<VenueAvailability> findByVenueVenueId(Long venueId);
 }
