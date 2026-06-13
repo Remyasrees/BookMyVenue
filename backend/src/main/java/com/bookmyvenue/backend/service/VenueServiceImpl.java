@@ -3,6 +3,7 @@ package com.bookmyvenue.backend.service;
 
 import com.bookmyvenue.backend.dto.Venue.VenueRequest;
 import com.bookmyvenue.backend.dto.Venue.VenueResponse;
+import com.bookmyvenue.backend.dto.Venue.VenueSearchRequest;
 import com.bookmyvenue.backend.entity.Users;
 import com.bookmyvenue.backend.entity.Venue;
 import com.bookmyvenue.backend.enums.VenueStatus;
@@ -10,7 +11,9 @@ import com.bookmyvenue.backend.exception.ResourceNotFoundException;
 import com.bookmyvenue.backend.mapper.VenueMapper;
 import com.bookmyvenue.backend.repository.UserRepository;
 import com.bookmyvenue.backend.repository.VenueRepository;
+import com.bookmyvenue.backend.specification.VenueSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -162,5 +165,28 @@ public class VenueServiceImpl implements VenueService {
                                         + venueId));
 
         venueRepository.delete(venue);
+    }
+
+    @Override
+    public List<VenueResponse> searchVenues(
+            VenueSearchRequest request) {
+        Specification<Venue> spec = Specification.allOf(
+                VenueSpecification.hasCategory(
+                        request.getCategoryId()),
+                VenueSpecification.hasMinPrice(
+                        request.getMinPrice()),
+                VenueSpecification.hasMaxPrice(
+                        request.getMaxPrice()),
+                VenueSpecification.hasCapacity(
+                        request.getCapacity()),
+                VenueSpecification.hasCity(
+                        request.getCity()),
+                VenueSpecification.isAvailableOn(
+                        request.getAvailableDate())
+        );
+        return venueRepository.findAll(spec)
+                .stream()
+                .map(venueMapper::toResponse)
+                .toList();
     }
 }
