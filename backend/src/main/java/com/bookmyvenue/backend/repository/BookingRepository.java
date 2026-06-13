@@ -13,11 +13,8 @@ public interface BookingRepository
         extends JpaRepository<Booking, Long>,
         JpaSpecificationExecutor<Booking> {
 
-    List<Booking> findByUserUserId(Long userId);
 
-    List<Booking> findByVenueOwnerUserUserId(
-            Long ownerId);
-
-    List<Booking> findByBookingStatus(
-            BookingStatus status);
+    long countByUserUserId(Long userId);
 }
+
+

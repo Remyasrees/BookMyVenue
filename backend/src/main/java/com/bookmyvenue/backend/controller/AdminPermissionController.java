@@ -1,4 +1,4 @@
 package com.bookmyvenue.backend.controller;
 
-public class AdminVenueController {
+public class AdminPermissionController {
 }

@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface VenueRepository extends JpaRepository<Venue, Long> ,
         JpaSpecificationExecutor<Venue> {
 
-    List<VenueAvailability> findByVenueVenueId(Long venueId);
+    List<VenueAvailability> findByVenueId(Long venueId);
     List<Venue> findByStatus(VenueStatus status);
 
     List<Venue> findByCity(String city);
@@ -24,4 +24,7 @@ public interface VenueRepository extends JpaRepository<Venue, Long> ,
     List<Venue> findByOwnerUserUserId(Long userId);
 
     boolean existsByVenueName(String venueName);
+
+    long countByOwnerUserUserId(Long ownerId);
+
 }
